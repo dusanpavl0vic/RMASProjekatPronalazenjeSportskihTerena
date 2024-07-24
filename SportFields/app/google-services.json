@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "569162247250",
+    "project_id": "sportfield-c2d92",
+    "storage_bucket": "sportfield-c2d92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569162247250:android:5c713a5ca324f28c49038b",
+        "android_client_info": {
+          "package_name": "com.company.sportfields"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeu2fZX2zzdwic2VuwKvk5f82oKoU_Rww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
