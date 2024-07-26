@@ -106,7 +106,7 @@ class LocationService : Service() {
                 "Lokacija",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Pratimo vasu lokaciju kako bi pronasli najbolja mesta za izlazak veceras"
+                description = "Pratimo lokaciju da bismo nasli najblizi sportski teren"
             }
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
@@ -126,7 +126,7 @@ class LocationService : Service() {
 
         return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Praćenje lokacije")
-            .setContentText("Servis praćenja lokacije je pokrenut u pozadini")
+            .setContentText("Pracenej lokacije je ukljuceno u pozadini")
             .setSmallIcon(R.drawable.logo)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
@@ -143,7 +143,7 @@ class LocationService : Service() {
                         if (distance <= 100 && !notifiedPlaces.contains(document.id)) {
                             sendNearbyPlaceNotification()
                             notifiedPlaces.add(document.id)
-                            Log.d("U blizini", document.toString())
+                            Log.d("U okolini", document.toString())
                         }
                     }
                 }
@@ -180,8 +180,8 @@ class LocationService : Service() {
         )
 
         val notification = NotificationCompat.Builder(this, notificationChannelId)
-            .setContentTitle("Mesto za izlazak u blizini")
-            .setContentText("Nalazite se u blizini nekog dobrog provoda!")
+            .setContentTitle("Mesto za igru u okolini")
+            .setContentText("Nalazite se u blizini dobrog terena")
             .setSmallIcon(R.drawable.logo)
             .setContentIntent(pendingIntent)
             .build()

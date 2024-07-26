@@ -26,25 +26,6 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:569162247250:android:2d1c9228a570e32c49038b",
-        "android_client_info": {
-          "package_name": "com.example.nightvibe"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBeu2fZX2zzdwic2VuwKvk5f82oKoU_Rww"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:569162247250:android:fb8cee6e4d3f541249038b",
         "android_client_info": {
           "package_name": "com.example.sportfields"
