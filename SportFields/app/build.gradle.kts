@@ -81,6 +81,12 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha08")
     implementation("androidx.compose.material:material:1.6.7")
+    implementation("com.google.firebase:firebase-storage:20.2.0")
+    implementation("com.google.maps.android:maps-compose:4.4.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
+    implementation("com.google.code.gson:gson:2.8.6")
 
 
 }
