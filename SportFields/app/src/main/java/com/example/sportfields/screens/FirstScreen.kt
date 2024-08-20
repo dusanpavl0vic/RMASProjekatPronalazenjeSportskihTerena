@@ -211,8 +211,18 @@ fun FirstScreen(
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
+
         sheetContent = {
-            //TODO: filter ekran
+            FilterScreen(
+                viewModel = viewModel,
+                fields = allFields,
+                sheetState = sheetState,
+                isFiltered = filtersOn,
+                isFilteredIndicator = isFilteredIndicator,
+                filteredField = filteredFields,
+                fieldMarkers = fieldsMarkers,
+                userLocation = myLocation.value
+            )
         },
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         modifier = Modifier.fillMaxSize()
