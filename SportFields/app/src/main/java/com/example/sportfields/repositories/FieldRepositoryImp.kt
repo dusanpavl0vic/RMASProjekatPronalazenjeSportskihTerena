@@ -20,7 +20,7 @@ class FieldRepositoryImp : FieldRepository {
 
     override suspend fun getAllFields(): Resource<List<Field>> {
         return try{
-            val snapshot = firestore.collection("Fields").get().await()
+            val snapshot = firestore.collection("places").get().await()
             val Fields = snapshot.toObjects(Field::class.java)
             Resource.Success(Fields)
         }catch (e: Exception){
@@ -31,7 +31,7 @@ class FieldRepositoryImp : FieldRepository {
 
     override suspend fun getUserFields(userId: String): Resource<List<Field>> {
         return try {
-            val snapshot = firestore.collection("Fields")
+            val snapshot = firestore.collection("places")
                 .whereEqualTo("userId", userId)
                 .get()
                 .await()

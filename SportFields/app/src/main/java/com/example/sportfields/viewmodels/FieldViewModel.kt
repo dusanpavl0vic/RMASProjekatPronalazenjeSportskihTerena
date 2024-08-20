@@ -16,19 +16,17 @@ class FieldViewModel : ViewModel(){
     val repository = FieldRepositoryImp()
 
     private val _fieldFlow = MutableStateFlow<Resource<String>?>(null)
-    val FieldFlow: StateFlow<Resource<String>?> = _fieldFlow
+    val fieldFlow: StateFlow<Resource<String>?> = _fieldFlow
 
     private val _newScore = MutableStateFlow<Resource<String>?>(null)
     val newScore: StateFlow<Resource<String>?> = _newScore
 
     private val _fields = MutableStateFlow<Resource<List<Field>>>(Resource.Success(emptyList()))
-    val Fields: StateFlow<Resource<List<Field>>> get() = _fields
+    val fields: StateFlow<Resource<List<Field>>> get() = _fields
 
     private val _userFields = MutableStateFlow<Resource<List<Field>>>(Resource.Success(emptyList()))
     val userFields: StateFlow<Resource<List<Field>>> get() = _userFields
 
-    private val _newMark = MutableStateFlow<Resource<String>?>(null)
-    val newMark: StateFlow<Resource<String>?> = _newMark
 
     fun getAllFields() = viewModelScope.launch {
         _fields.value = repository.getAllFields()

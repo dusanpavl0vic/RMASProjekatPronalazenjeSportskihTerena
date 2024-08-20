@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+    <!-- Pin -->
+    <path
+        android:fillColor="#4dc37c"
+        android:pathData="M32,4c-11.9,0 -21.6,9.8 -21.6,21.9 0,16.2 17.3,34.1 21.6,34.1 4.3,0 21.6,-17.9 21.6,-34.1C53.6,13.8 43.9,4 32,4z"/>
+
+    <!-- Popunjeni krug u centru -->
+    <path
+        android:fillColor="#ffffff"
+        android:strokeColor="#ffffff"
+        android:strokeWidth="3"
+        android:pathData="M32,16a10,10 0 1,1 -10,10a10,10 0 0,1 10,-10z"/>
+
+</vector>
+

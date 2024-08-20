@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+
+    <!-- Trapezoidni deo ikone filtera -->
+    <path
+        android:pathData="M4,6h24L18,18v8l-4,-2v-6Z"
+        android:fillColor="#ffffff"/>
+</vector>

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -203,12 +204,20 @@ fun RegisterScreen(navController: NavController, viewModel: LoginViewModel){
                     }
                     is Resource.Success -> {
                         isLoading.value = false
-
+                        LaunchedEffect(Unit) {
+                            navController?.navigate(Routes.firstScreen) {
+                                popUpTo(Routes.firstScreen) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     }
                     is Resource.loading -> {
 
                     }
-                    null -> Log.d("Okic", "Okic")
+                    null -> {
+
+                    }
                 }
             }
         }

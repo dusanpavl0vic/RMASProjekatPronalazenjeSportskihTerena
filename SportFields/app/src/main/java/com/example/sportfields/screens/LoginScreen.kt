@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +44,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
     val buttonIsEnabled = remember { mutableStateOf(true) }
     val isLoading = remember { mutableStateOf(false) }
 
-    val loginFlow = viewModel.loginFlow.collectAsState()
+    val loginFlow = viewModel?.loginFlow?.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -116,10 +117,17 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel){
             }
             is Resource.Success -> {
                 isLoading.value = false
-
+                LaunchedEffect(Unit) {
+                    navController.navigate(Routes.firstScreen) {
+                        popUpTo(Routes.firstScreen) {
+                            inclusive = true
+                        }
+                    }
+                }
+                Log.d("Login", "Logovan sam")
             }
             is Resource.loading -> {}
-            null -> {}
+            null -> Log.d("Login", "nisi")
         }
     }
 }
