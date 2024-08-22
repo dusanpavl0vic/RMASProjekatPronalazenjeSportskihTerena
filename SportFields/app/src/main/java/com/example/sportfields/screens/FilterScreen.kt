@@ -101,7 +101,7 @@ fun FilterScreen(
         mutableStateOf("")
     }
 
-    val isSet = remember { mutableStateOf(false) }
+
 
    
     val coroutineScope = rememberCoroutineScope()
@@ -175,7 +175,7 @@ fun FilterScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Distanca",
+                text = "Udaljenost",
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -186,7 +186,7 @@ fun FilterScreen(
                 if(rangeValues.floatValue != 1000f)
                     rangeValues.floatValue.toBigDecimal().setScale(1, RoundingMode.UP).toString() + "m"
                 else
-                    "Neograničeno"
+                    "∞"
                 ,style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -216,14 +216,16 @@ fun FilterScreen(
             }
 
 
-            selectedOption.value?.let { selectedFieldType ->
-                filteredFields.retainAll { field ->
-                    field.type == selectedFieldType.toString()
-                }
+            if(selectedOption.value != "") {
+                selectedOption.value?.let { selectedFieldType ->
+                    filteredFields.retainAll { field ->
+                        field.type == selectedFieldType.toString()
+                    }
 
-                with(sharedPreferences.edit()) {
-                    putString("selected_option", selectedFieldType.toString())
-                    apply()
+                    with(sharedPreferences.edit()) {
+                        putString("selected_option", selectedFieldType.toString())
+                        apply()
+                    }
                 }
             }
 
@@ -252,7 +254,6 @@ fun FilterScreen(
 
             with(sharedPreferences.edit()) {
                 putFloat("range", 1000f)
-                putString("attendance", null)
                 putString("options", null)
                 apply()
             }

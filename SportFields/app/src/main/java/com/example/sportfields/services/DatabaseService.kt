@@ -2,6 +2,7 @@ package com.example.sportfields.services
 
 
 import com.example.sportfields.models.Field
+import com.example.sportfields.models.Score
 import com.example.sportfields.models.User
 import com.example.sportfields.repositories.Resource
 import com.google.firebase.firestore.FirebaseFirestore
@@ -78,6 +79,44 @@ class DatabaseService(
                 Resource.Failure(Exception("Korisnikov dokument ne postoji"))
             }
         }catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+    suspend fun saveScore(
+        score: Score
+    ): Resource<String>{
+        return try{
+            val result = firestore.collection("score").add(score).await()
+            Resource.Success(result.id)
+        }catch(e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+
+    suspend fun updateScore(
+        scoreId: String,
+        score: Int
+    ) : Resource<String>{
+        return try{
+            val documentRef = firestore.collection("score").document(scoreId)
+            documentRef.update("score", score).await()
+            Resource.Success(scoreId)
+        }catch(e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+    suspend fun updateComment(
+        scoreId: String,
+        comment: String
+    ) : Resource<String>{
+        return try{
+            val documentRef = firestore.collection("score").document(scoreId)
+            documentRef.update("comment", comment).await()
+            Resource.Success(scoreId)
+        }catch(e: Exception){
             e.printStackTrace()
             Resource.Failure(e)
         }

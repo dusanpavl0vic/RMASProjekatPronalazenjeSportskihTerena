@@ -70,6 +70,7 @@ import com.example.sportfields.viewmodels.FieldViewModel
 import com.example.sportfields.viewmodels.LoginViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -79,6 +80,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -251,7 +254,12 @@ fun FirstScreen(
                             selected = false,
                             icon = { Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = "profile", tint = mainColor) },
                             onClick = {
-                                //TODO: navigacija na profil korisnika
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                    val userJson = Gson().toJson(user.value)
+                                    val encodedUserJson = URLEncoder.encode(userJson, StandardCharsets.UTF_8.toString())
+                                    navController.navigate(Routes.profileScreen + "/$encodedUserJson")
+                                }
                             }
                         )
                         NavigationDrawerItem(

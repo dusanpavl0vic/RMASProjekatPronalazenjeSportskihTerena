@@ -31,6 +31,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -862,5 +863,24 @@ fun FieldTypeDropdown(selectedType: FieldType, onTypeSelected: (FieldType) -> Un
     }
 }
 
-
+@Composable
+fun BackButton(
+    onClick: () -> Unit
+){
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .background(
+                Color.White,
+                RoundedCornerShape(5.dp)
+            )
+            .padding(0.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Filled.ArrowBackIosNew,
+            contentDescription = "",
+            tint = mainColor
+        )
+    }
+}
 

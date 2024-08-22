@@ -13,15 +13,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.sportfields.models.Field
+import com.example.sportfields.models.User
 import com.example.sportfields.repositories.Resource
 import com.example.sportfields.screens.FirstScreen
 import com.example.sportfields.screens.HomeScreen
 import com.example.sportfields.screens.LoginScreen
+import com.example.sportfields.screens.ProfileScreen
 import com.example.sportfields.screens.RegisterScreen
 import com.example.sportfields.screens.addFieldScreen
 import com.example.sportfields.viewmodels.FieldViewModel
 import com.example.sportfields.viewmodels.LoginViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -76,6 +79,23 @@ fun Router(loginViewModel : LoginViewModel, fieldViewModel : FieldViewModel){
             }
             addFieldScreen(fieldViewModel = fieldViewModel, location = location, navController)
         }
+
+        composable(
+            route = Routes.profileScreen + "/{user}",
+            arguments = listOf(navArgument("user"){
+                type = NavType.StringType
+            })
+        ){
+                backStackEntry ->
+            val userDataJson = backStackEntry.arguments?.getString("user")
+            val userData = Gson().fromJson(userDataJson, User::class.java)
+
+            ProfileScreen(
+                navController = navController,
+                fieldViewModel = fieldViewModel,
+                user = userData
+            )
+        }
     }
 }
 
@@ -85,4 +105,5 @@ object Routes {
     val registerScreen = "registerScreen"
     val addFieldScreen = "addFieldScreen"
     val firstScreen = "firstScreen"
+    val profileScreen = "profileScreen"
 }
