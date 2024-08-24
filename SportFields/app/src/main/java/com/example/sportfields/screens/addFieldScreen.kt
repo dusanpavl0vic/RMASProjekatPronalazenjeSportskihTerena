@@ -58,6 +58,11 @@ fun addFieldScreen(
             .fillMaxWidth()
             .padding(vertical = 50.dp, horizontal = 20.dp)
     ) {
+        item{
+            BackButton {
+                navController.popBackStack()
+            }
+        }
         item{ Heading1Text(textValue = "Dodaj novi teren")}
         item{ Spacer(modifier = Modifier.height(20.dp)) }
         item {

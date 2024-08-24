@@ -12,17 +12,21 @@ interface ScoreRepository {
     suspend fun addScore(
         fieldId: String,
         score: Int,
+        field: Field
+    ) : Resource<String>
+
+    /*
+    suspend fun addComment(
+        fieldId: String,
         comment: String,
         field: Field
     ) : Resource<String>
+     */
 
     suspend fun updateScore(
         scoreId: String,
         score: Int,
     ) : Resource<String>
 
-    suspend fun updateComment(
-        scoreId: String,
-        comment: String,
-    ) : Resource<String>
+
 }

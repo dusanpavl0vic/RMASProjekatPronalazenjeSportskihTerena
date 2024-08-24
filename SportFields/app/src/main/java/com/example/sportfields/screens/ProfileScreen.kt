@@ -40,6 +40,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sportfields.models.Field
 import com.example.sportfields.models.User
+import com.example.sportfields.navigation.Routes
 import com.example.sportfields.repositories.Resource
 import com.example.sportfields.ui.theme.mainColor
 import com.example.sportfields.viewmodels.FieldViewModel
@@ -88,7 +89,7 @@ fun ProfileScreen(
                         .height(300.dp)
                         .background(
                             mainColor,
-                            shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+
                         ),
                     contentAlignment = Alignment.Center
                 ) {
@@ -217,11 +218,11 @@ fun PhotosSection(
     Column(
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        Text(text = "Moji tereni")
+        Text(text = "Moji tereni: ")
         Spacer(modifier = Modifier.height(20.dp))
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             if(fields.isNotEmpty()) {
@@ -235,10 +236,10 @@ fun PhotosSection(
                             Modifier
                                 .width(100.dp)
                                 .height(100.dp)
-                                .clip(RoundedCornerShape(100.dp))
+
                                 .background(
                                     Color.White,
-                                    RoundedCornerShape(100.dp)
+
                                 )
                                 .clickable {
                                     val fieldJson = Gson().toJson(field)
@@ -246,7 +247,7 @@ fun PhotosSection(
                                         fieldJson,
                                         StandardCharsets.UTF_8.toString()
                                     )
-                                    //TODO: navigacija do screena za field
+                                    navController.navigate(Routes.fieldScreen + "/$encodedFieldJson")
                                 }
                         )
                     }

@@ -58,6 +58,8 @@ class DatabaseService(
         }
     }
 
+
+    //dodaje bodove korisniku
     suspend fun addScore(
         userId: String,
         value: Int
@@ -83,6 +85,8 @@ class DatabaseService(
             Resource.Failure(e)
         }
     }
+
+
     suspend fun saveScore(
         score: Score
     ): Resource<String>{
@@ -108,19 +112,7 @@ class DatabaseService(
             Resource.Failure(e)
         }
     }
-    suspend fun updateComment(
-        scoreId: String,
-        comment: String
-    ) : Resource<String>{
-        return try{
-            val documentRef = firestore.collection("score").document(scoreId)
-            documentRef.update("comment", comment).await()
-            Resource.Success(scoreId)
-        }catch(e: Exception){
-            e.printStackTrace()
-            Resource.Failure(e)
-        }
-    }
+
 
 }
 

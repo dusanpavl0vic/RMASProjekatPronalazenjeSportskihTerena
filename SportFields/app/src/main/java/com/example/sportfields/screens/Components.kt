@@ -72,15 +72,19 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sportfields.R
 import com.example.sportfields.models.Field
+import com.example.sportfields.navigation.Routes
 import com.example.sportfields.ui.theme.buttonDisabledColor
 import com.example.sportfields.ui.theme.greyTextColor
 import com.example.sportfields.ui.theme.mainColor
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberMarkerState
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 @Composable
@@ -580,10 +584,22 @@ fun FieldMarker(
         title = field.type,
         icon = icon,
         snippet = field.description,
-        //onClick = {
+        onClick = {
+            val fieldJson = Gson().toJson(field)
+            val encodedFieldJson =
+                URLEncoder.encode(
+                    fieldJson,
+                    StandardCharsets.UTF_8.toString()
+                )
 
-            //TODO: navigacija na profil terena
-        //}
+            val fieldsJson = Gson().toJson(fieldMarkers)
+            val encodedFieldsJson = URLEncoder.encode(
+                fieldsJson,
+                StandardCharsets.UTF_8.toString()
+            )
+            navController.navigate(Routes.fieldScreen + "/$encodedFieldJson/$encodedFieldsJson")
+            true
+        }
     )
 }
 fun myPositionIndicator(

@@ -263,11 +263,21 @@ fun FirstScreen(
                             }
                         )
                         NavigationDrawerItem(
-                            label = { Text(text = "Mesta", color = mainColor) },
+                            label = { Text(text = "Svi tereni", color = mainColor) },
                             selected = false,
                             icon = { Icon(imageVector = Icons.Filled.Place, contentDescription = "Fields", tint = mainColor) },
                             onClick = {
-                                //TODO: navigacija na prikaz terena
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                    val fieldsJson = Gson().toJson(
+                                        if(filtersOn.value)
+                                            filteredFields
+                                        else
+                                            fieldsMarkers
+                                    )
+                                    val encodedFieldsJson = URLEncoder.encode(fieldsJson, StandardCharsets.UTF_8.toString())
+                                    navController.navigate(Routes.allFieldsScreen + "/$encodedFieldsJson")
+                                }
                             }
                         )
                         NavigationDrawerItem(
@@ -275,7 +285,10 @@ fun FirstScreen(
                             selected = false,
                             icon = { Icon(imageVector = Icons.Filled.PeopleAlt, contentDescription = "list", tint = mainColor) },
                             onClick = {
-                                //TODO: prikaz liste po ocenama
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                    navController.navigate(Routes.rangListScreen)
+                                }
                             }
                         )
                         NavigationDrawerItem(
@@ -283,7 +296,10 @@ fun FirstScreen(
                             selected = false,
                             icon = { Icon(imageVector = Icons.Filled.Settings, contentDescription = "settings", tint = mainColor) },
                             onClick = {
-                                //TODO: navigacija na setting screen
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                    navController.navigate(Routes.settingsScreen)
+                                }
                             }
                         )
                         Column(

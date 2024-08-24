@@ -16,6 +16,7 @@ import com.example.sportfields.R
 import com.example.sportfields.repositories.LocationRepository
 import com.example.sportfields.repositories.LocationRepositoryImp
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,11 +24,15 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class LocationService : Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationRepository
-    private val notifiedPlaces = mutableSetOf<String>()
+    private val notifiedFields = mutableSetOf<String>()
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -125,6 +130,62 @@ class LocationService : Service() {
             .setOngoing(true)
             .build()
     }
+    private fun checkProximityToFields(latitude: Double, longitude: Double) {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.collection("fields").get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val geoPoint = document.getGeoPoint("location")
+                    geoPoint?.let {
+                        val distance = calculateDistance(latitude, longitude, it.latitude, it.longitude)
+                        if (distance <= 100 && !notifiedFields.contains(document.id)) {
+                            sendNearbyFieldNotification()
+                            notifiedFields.add(document.id)
+                            Log.d("U blizini", document.toString())
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e("LocationService", "Error fetching fields", e)
+            }
+    }
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val earthRadius = 6371000.0
+
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(dLon / 2) * sin(dLon / 2)
+
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return earthRadius * c
+    }
+
+    private fun sendNearbyFieldNotification() {
+        val notificationChannelId = "LOCATION_SERVICE_CHANNEL"
+
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val notification = NotificationCompat.Builder(this, notificationChannelId)
+            .setContentTitle("Sportski teren u blizini")
+            .setContentText("Nalazite se blizu nekog sportskog terena")
+            .setSmallIcon(R.drawable.logo)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NEARBY_FIELD_NOTIFICATION_ID, notification)
+    }
 
 
     companion object {
@@ -135,6 +196,6 @@ class LocationService : Service() {
         const val EXTRA_LOCATION_LATITUDE = "EXTRA_LOCATION_LATITUDE"
         const val EXTRA_LOCATION_LONGITUDE = "EXTRA_LOCATION_LONGITUDE"
         private const val NOTIFICATION_ID = 1
-        private const val NEARBY_PLACE_NOTIFICATION_ID = 2
+        private const val NEARBY_FIELD_NOTIFICATION_ID = 2
     }
 }

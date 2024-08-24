@@ -15,7 +15,7 @@ class ScoreRepositoryImp : ScoreRepository {
         fieldId: String
     ): Resource<List<Score>> {
         return try {
-            val scoreDocRef = firestoreInstance.collection("scores")
+            val scoreDocRef = firestoreInstance.collection("score")
             val querySnapshot = scoreDocRef.get().await()
             val scoresList = mutableListOf<Score>()
             for (document in querySnapshot.documents) {
@@ -27,7 +27,6 @@ class ScoreRepositoryImp : ScoreRepository {
                             userId = document.getString("userId") ?: "",
                             fieldId = fieldId,
                             score = document.getLong("score")?.toInt() ?: 0,
-                            comment = document.getString("comment") ?: "",
                         )
                     )
                 }
@@ -42,7 +41,7 @@ class ScoreRepositoryImp : ScoreRepository {
 
     override suspend fun getUserScore(): Resource<List<Score>> {
         return try{
-            val scoreDocRef = firestoreInstance.collection("scores")
+            val scoreDocRef = firestoreInstance.collection("score")
             val querySnapshot = scoreDocRef.get().await()
             val scoresList = mutableListOf<Score>()
             for(document in querySnapshot.documents){
@@ -53,7 +52,6 @@ class ScoreRepositoryImp : ScoreRepository {
                         fieldId = document.getString("fieldId") ?: "",
                         userId = userId,
                         score = document.getLong("score")?.toInt() ?: 0,
-                        comment = document.getString("comment") ?: "",
                     ))
                 }
             }
@@ -68,7 +66,6 @@ class ScoreRepositoryImp : ScoreRepository {
     override suspend fun addScore(
         fieldId: String,
         score: Int,
-        comment: String,
         field: Field
     ): Resource<String> {
         return try{
@@ -76,9 +73,9 @@ class ScoreRepositoryImp : ScoreRepository {
                 userId = firebaseAuth.currentUser!!.uid,
                 fieldId = fieldId,
                 score = score,
-                comment = comment
             )
             databaseService.addScore(field.userId, score)
+            databaseService.addScore(firebaseAuth.currentUser!!.uid, 2)
             val result = databaseService.saveScore(myScore)
             result
         }catch (e: Exception){
@@ -86,6 +83,8 @@ class ScoreRepositoryImp : ScoreRepository {
             Resource.Failure(e)
         }
     }
+
+
 
     override suspend fun updateScore(
         scoreId: String,
@@ -100,16 +99,5 @@ class ScoreRepositoryImp : ScoreRepository {
         }
     }
 
-    override suspend fun updateComment(
-        scoreId: String,
-        comment: String
-    ): Resource<String> {
-        return try{
-            val result = databaseService.updateComment(scoreId, comment)
-            result
-        }catch (e: Exception){
-            e.printStackTrace()
-            Resource.Failure(e)
-        }
-    }
+
 }

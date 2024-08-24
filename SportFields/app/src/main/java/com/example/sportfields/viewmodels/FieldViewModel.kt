@@ -5,8 +5,10 @@ import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sportfields.models.Field
+import com.example.sportfields.models.Score
 import com.example.sportfields.repositories.FieldRepositoryImp
 import com.example.sportfields.repositories.Resource
+import com.example.sportfields.repositories.ScoreRepositoryImp
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +20,6 @@ class FieldViewModel : ViewModel(){
     private val _fieldFlow = MutableStateFlow<Resource<String>?>(null)
     val fieldFlow: StateFlow<Resource<String>?> = _fieldFlow
 
-    private val _newScore = MutableStateFlow<Resource<String>?>(null)
-    val newScore: StateFlow<Resource<String>?> = _newScore
 
     private val _fields = MutableStateFlow<Resource<List<Field>>>(Resource.Success(emptyList()))
     val fields: StateFlow<Resource<List<Field>>> get() = _fields
@@ -56,5 +56,43 @@ class FieldViewModel : ViewModel(){
             location = location!!.value
         )
         _fieldFlow.value = Resource.Success("Uspesno dodat teren")
+    }
+
+    private val _newScore = MutableStateFlow<Resource<String>?>(null)
+    val newScore: StateFlow<Resource<String>?> = _newScore
+
+    private val _scores = MutableStateFlow<Resource<List<Score>>>(Resource.Success(emptyList()))
+    val scores: StateFlow<Resource<List<Score>>> get() = _scores
+    val scoreRepository = ScoreRepositoryImp()
+
+
+
+    fun addScore(
+        fieldId: String,
+        score: Int,
+        field: Field
+    ) = viewModelScope.launch {
+        _newScore.value = scoreRepository.addScore(fieldId, score, field)
+
+    }
+
+    //menjano
+
+    fun updateScore(
+        scoreId: String,
+        score: Int,
+    ) = viewModelScope.launch{
+        _newScore.value = scoreRepository.updateScore(scoreId, score)
+
+    }
+
+    //menjano
+
+    fun getFieldScore(
+        fieldId: String
+    ) = viewModelScope.launch{
+        _scores.value = Resource.loading
+        val result = scoreRepository.getScores(fieldId)
+        _scores.value = result
     }
 }
